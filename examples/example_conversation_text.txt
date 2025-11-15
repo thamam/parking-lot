@@ -1,0 +1,15 @@
+USER: I want to add dark mode to my React application
+
+ASSISTANT: I can help you implement dark mode for your React application. Before we start, I need to understand a few things about your project:
+
+1. Are you using any CSS framework or library? (Tailwind CSS, Material-UI, styled-components, etc.)
+
+2. Should the theme preference persist across sessions? If yes, should we use localStorage, cookies, or a backend API?
+
+3. Do you want a toggle switch, or should it follow the system preference automatically?
+
+4. Are there any specific components that should NOT change in dark mode?
+
+5. Would you like smooth transitions when switching themes, or instant changes?
+
+Let me know your preferences and I'll implement the solution accordingly.

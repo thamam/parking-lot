@@ -1,0 +1,12 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "I need to build a REST API for my blog application. It should handle posts, comments, and users."
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you build a REST API for your blog application. Before we proceed, I need to clarify a few things:\n\n1. Which framework would you like to use? (Express.js, Fastify, NestJS, or something else?)\n\n2. What database do you prefer? PostgreSQL, MySQL, MongoDB, or another option?\n\n3. For authentication, should we implement JWT tokens, session-based auth, or OAuth?\n\n4. Do you want to include rate limiting and API versioning from the start, or add those later?\n\nPlease let me know your preferences so I can build exactly what you need."
+    }
+  ]
+}

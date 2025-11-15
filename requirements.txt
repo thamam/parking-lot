@@ -1,0 +1,24 @@
+# Core Python dependencies for Conversation Review Voice Agent
+# Python 3.8+ required
+
+# No external dependencies required for core functionality
+# The agent uses only Python standard library modules:
+# - json
+# - re
+# - dataclasses
+# - typing
+# - datetime
+# - pathlib
+# - xml.etree.ElementTree
+# - xml.dom.minidom
+
+# Optional dependencies for testing and development
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Optional dependencies for future voice integration (v2)
+# Uncomment when implementing voice features:
+# openai-whisper>=20230124  # Speech-to-text
+# elevenlabs>=0.2.0         # Text-to-speech
+# pyaudio>=0.2.13           # Audio recording
+# pydub>=0.25.1             # Audio processing

@@ -1,0 +1,12 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "I'm building an e-commerce platform and need help with the payment integration and order processing workflow."
+    },
+    {
+      "role": "assistant",
+      "content": "I'll help you set up payment integration and order processing for your e-commerce platform. I've analyzed the requirements and have several critical questions:\n\n**HIGH PRIORITY - Payment Processing:**\n1. Which payment gateway should we integrate? Stripe is the most common choice, but we could also use PayPal, Square, or Braintree. Each has different fee structures and features.\n\n2. Do you need to support multiple currencies? If yes, which ones?\n\n3. Should we implement PCI compliance measures, or are you planning to use a hosted payment page?\n\n**MEDIUM PRIORITY - Order Management:**\n4. How should we handle inventory management? Real-time stock updates or batch processing at end of day?\n\n5. What's your preference for order status workflow? (Draft → Pending → Processing → Shipped → Delivered) or a custom flow?\n\n6. Should failed payments automatically retry, or require manual intervention?\n\n**LOW PRIORITY - Future Features:**\n7. Do you want to include subscription/recurring payments from the start or add that later?\n\n8. Should we set up webhook handlers for payment notifications now, or is that a future enhancement?\n\nSome of these decisions are blocking critical implementation details, so please let me know your preferences."
+    }
+  ]
+}
