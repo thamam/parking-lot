@@ -9,6 +9,9 @@ from pdf2image import convert_from_path
 
 logger = logging.getLogger(__name__)
 
+# Supported image file extensions
+SUPPORTED_IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.tiff', '.tif', '.bmp', '.gif'}
+
 
 class OCREngine:
     """Handles OCR processing for Hebrew documents."""
@@ -34,16 +37,25 @@ class OCREngine:
             Extracted text from the image
         """
         try:
-            image = Image.open(image_path)
-            text = pytesseract.image_to_string(
-                image,
-                lang=self.tesseract_lang,
-                config='--psm 3'  # Fully automatic page segmentation
-            )
-            logger.info(f"Extracted {len(text)} characters from {image_path}")
-            return text
-        except Exception as e:
-            logger.error(f"Error processing image {image_path}: {e}")
+            with Image.open(image_path) as image:
+                text = pytesseract.image_to_string(
+                    image,
+                    lang=self.tesseract_lang,
+                    config='--psm 3'  # Fully automatic page segmentation
+                )
+                logger.info(f"Extracted {len(text)} characters from {image_path}")
+                return text
+        except FileNotFoundError:
+            logger.exception(f"Image file not found: {image_path}")
+            raise
+        except (IOError, OSError):
+            logger.exception(f"Error reading image file: {image_path}")
+            raise
+        except pytesseract.TesseractError:
+            logger.exception(f"Tesseract error processing image: {image_path}")
+            raise
+        except Exception:
+            logger.exception(f"Unexpected error processing image: {image_path}")
             raise
 
     def process_pdf(self, pdf_path: Union[str, Path]) -> List[str]:
@@ -71,8 +83,17 @@ class OCREngine:
                 logger.info(f"Processed page {i}/{len(images)}")
 
             return texts
-        except Exception as e:
-            logger.error(f"Error processing PDF {pdf_path}: {e}")
+        except FileNotFoundError:
+            logger.exception(f"PDF file not found: {pdf_path}")
+            raise
+        except (IOError, OSError):
+            logger.exception(f"Error reading PDF file: {pdf_path}")
+            raise
+        except pytesseract.TesseractError:
+            logger.exception(f"Tesseract error processing PDF: {pdf_path}")
+            raise
+        except Exception:
+            logger.exception(f"Unexpected error processing PDF: {pdf_path}")
             raise
 
     def process_document(self, document_path: Union[str, Path]) -> Union[str, List[str]]:
@@ -91,7 +112,11 @@ class OCREngine:
         suffix = path.suffix.lower()
         if suffix == '.pdf':
             return self.process_pdf(path)
-        elif suffix in ['.png', '.jpg', '.jpeg', '.tiff', '.bmp']:
+        elif suffix in SUPPORTED_IMAGE_EXTENSIONS:
             return self.process_image(path)
         else:
-            raise ValueError(f"Unsupported file format: {suffix}")
+            supported_formats = ', '.join(sorted(SUPPORTED_IMAGE_EXTENSIONS | {'.pdf'}))
+            raise ValueError(
+                f"Unsupported file format: {suffix}. "
+                f"Supported formats: {supported_formats}"
+            )

@@ -63,9 +63,21 @@ class LLMCorrector:
             logger.info(f"Text corrected: {len(ocr_text)} -> {len(corrected_text)} chars")
             return corrected_text
 
-        except Exception as e:
-            logger.error(f"Error during LLM correction: {e}")
-            logger.warning("Returning original OCR text due to error")
+        except (ollama.ResponseError, ollama.RequestError) as e:
+            logger.exception("LLM API error during text correction")
+            logger.warning("Returning original OCR text due to LLM error")
+            return ocr_text
+        except (KeyError, TypeError) as e:
+            logger.exception("Unexpected response format from LLM")
+            logger.warning("Returning original OCR text due to parsing error")
+            return ocr_text
+        except ConnectionError as e:
+            logger.exception("Connection error while contacting Ollama")
+            logger.warning("Ensure Ollama is running. Returning original OCR text")
+            return ocr_text
+        except Exception:
+            logger.exception("Unexpected error during LLM correction")
+            logger.warning("Returning original OCR text due to unexpected error")
             return ocr_text
 
     def _build_correction_prompt(self, ocr_text: str, context: Optional[str] = None) -> str:
@@ -114,6 +126,10 @@ class LLMCorrector:
                 )
 
             return is_available
-        except Exception as e:
-            logger.error(f"Error checking model availability: {e}")
+        except ConnectionError:
+            logger.exception("Connection error while checking model availability")
+            logger.warning("Ensure Ollama is running")
+            return False
+        except Exception:
+            logger.exception("Unexpected error checking model availability")
             return False

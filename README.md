@@ -52,7 +52,7 @@ Alternative Hebrew-supporting models:
 
 1. **Clone the repository:**
 ```bash
-git clone <repository-url>
+git clone https://github.com/thamam/parking-lot.git
 cd parking-lot
 ```
 
@@ -62,9 +62,13 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. **Install dependencies:**
+3. **Install the package:**
 ```bash
-pip install -r requirements.txt
+# Install in editable mode (recommended for development)
+pip install -e .
+
+# Or install normally
+pip install .
 ```
 
 4. **Configure (optional):**
@@ -73,34 +77,48 @@ cp .env.example .env
 # Edit .env with your preferred settings
 ```
 
+Note: For development, install with dev dependencies:
+```bash
+pip install -e ".[dev]"
+```
+
 ## Usage
 
 ### Command Line Interface
 
 **Check system requirements:**
 ```bash
-python main.py check
+hebrew-ocr check
 ```
 
 **Process a single document:**
 ```bash
-# With LLM correction
-python main.py process path/to/document.pdf -o output.md
+# With LLM correction (uses config defaults)
+hebrew-ocr process path/to/document.pdf -o output.md
 
 # Without LLM correction (faster, less accurate)
-python main.py process path/to/document.pdf -o output.md --no-llm
+hebrew-ocr process path/to/document.pdf -o output.md --no-llm
 
 # With context (helps LLM understand the content)
-python main.py process document.pdf -o output.md -c "ספר היסטורי מ-1970"
+hebrew-ocr process document.pdf -o output.md -c "ספר היסטורי מ-1970"
+
+# Override config settings
+hebrew-ocr process document.pdf -o output.md --dpi 600 --model aya:latest
 ```
 
 **Batch processing:**
 ```bash
 # Process all PDFs in a directory
-python main.py batch input_dir/ output_dir/ --pattern "*.pdf"
+hebrew-ocr batch input_dir/ output_dir/ --pattern "*.pdf"
 
 # Process all images
-python main.py batch scans/ converted/ --pattern "*.png"
+hebrew-ocr batch scans/ converted/ --pattern "*.png"
+```
+
+**Legacy CLI (if not installed with pip):**
+```bash
+python main.py check
+python main.py process document.pdf -o output.md
 ```
 
 ### Python API

@@ -1,11 +1,5 @@
 """Basic usage example for Hebrew OCR to Markdown converter."""
 
-import sys
-from pathlib import Path
-
-# Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 from hebrew_ocr import HebrewOCRPipeline
 
 
@@ -27,7 +21,7 @@ def main():
             output_path="output/result.md",
             context="מסמך היסטורי מתקופת המנדט"  # Optional context
         )
-        print(f"✓ Processed successfully")
+        print("✓ Processed successfully")
         print(f"Preview:\n{result[:200]}...\n")
     except FileNotFoundError:
         print("! Please provide a valid document path")
@@ -39,7 +33,7 @@ def main():
             document_path="path/to/your/hebrew_book.pdf",
             output_path="output/book.md"
         )
-        print(f"✓ PDF processed successfully\n")
+        print("✓ PDF processed successfully\n")
     except FileNotFoundError:
         print("! Please provide a valid PDF path")
 

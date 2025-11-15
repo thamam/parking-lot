@@ -3,6 +3,7 @@
 import logging
 import click
 from pathlib import Path
+from typing import Optional
 from .pipeline import HebrewOCRPipeline
 from .config import Config
 
@@ -12,6 +13,33 @@ def setup_logging(level: str):
     logging.basicConfig(
         level=getattr(logging, level.upper()),
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+
+def create_pipeline(
+    tesseract_lang: Optional[str] = None,
+    dpi: Optional[int] = None,
+    model: Optional[str] = None,
+    use_llm: Optional[bool] = None
+) -> HebrewOCRPipeline:
+    """Create a pipeline with config defaults and CLI overrides.
+
+    Args:
+        tesseract_lang: Tesseract language (overrides config)
+        dpi: DPI for PDF conversion (overrides config)
+        model: LLM model name (overrides config)
+        use_llm: Whether to use LLM correction (overrides config)
+
+    Returns:
+        Configured pipeline instance
+    """
+    config = Config()
+
+    return HebrewOCRPipeline(
+        tesseract_lang=tesseract_lang or config.TESSERACT_LANG,
+        dpi=dpi or config.DPI,
+        llm_model=model or config.LLM_MODEL,
+        use_llm_correction=use_llm if use_llm is not None else config.USE_LLM_CORRECTION
     )
 
 
@@ -31,17 +59,21 @@ def cli(log_level):
 @click.option('--output', '-o', type=click.Path(), help='Output Markdown file path')
 @click.option('--context', '-c', help='Context about the document')
 @click.option('--no-llm', is_flag=True, help='Disable LLM correction')
-@click.option('--model', default='aya:8b', help='LLM model name')
-@click.option('--dpi', default=300, help='DPI for PDF conversion')
-def process(input_path, output, context, no_llm, model, dpi):
+@click.option('--model', default=None, help='LLM model name (overrides config)')
+@click.option('--dpi', default=None, type=int, help='DPI for PDF conversion (overrides config)')
+@click.option('--lang', default=None, help='Tesseract language (overrides config)')
+def process(input_path, output, context, no_llm, model, dpi, lang):
     """Process a single document (image or PDF)."""
     click.echo(f"Processing: {input_path}")
 
-    pipeline = HebrewOCRPipeline(
-        tesseract_lang="heb",
+    # Determine use_llm based on flag
+    use_llm = False if no_llm else None
+
+    pipeline = create_pipeline(
+        tesseract_lang=lang,
         dpi=dpi,
-        llm_model=model,
-        use_llm_correction=not no_llm
+        model=model,
+        use_llm=use_llm
     )
 
     try:
@@ -68,17 +100,21 @@ def process(input_path, output, context, no_llm, model, dpi):
 @click.option('--pattern', default='*', help='File pattern to match')
 @click.option('--context', '-c', help='Context about the documents')
 @click.option('--no-llm', is_flag=True, help='Disable LLM correction')
-@click.option('--model', default='aya:8b', help='LLM model name')
-@click.option('--dpi', default=300, help='DPI for PDF conversion')
-def batch(input_dir, output_dir, pattern, context, no_llm, model, dpi):
+@click.option('--model', default=None, help='LLM model name (overrides config)')
+@click.option('--dpi', default=None, type=int, help='DPI for PDF conversion (overrides config)')
+@click.option('--lang', default=None, help='Tesseract language (overrides config)')
+def batch(input_dir, output_dir, pattern, context, no_llm, model, dpi, lang):
     """Process multiple documents in a directory."""
     click.echo(f"Batch processing: {input_dir}")
 
-    pipeline = HebrewOCRPipeline(
-        tesseract_lang="heb",
+    # Determine use_llm based on flag
+    use_llm = False if no_llm else None
+
+    pipeline = create_pipeline(
+        tesseract_lang=lang,
         dpi=dpi,
-        llm_model=model,
-        use_llm_correction=not no_llm
+        model=model,
+        use_llm=use_llm
     )
 
     try:
@@ -116,9 +152,9 @@ def check():
     try:
         langs = pytesseract.get_languages()
         if 'heb' in langs:
-            click.echo(f"✓ Hebrew language data: Installed")
+            click.echo("✓ Hebrew language data: Installed")
         else:
-            click.echo(f"✗ Hebrew language data: Not installed")
+            click.echo("✗ Hebrew language data: Not installed")
             click.echo(f"  Available languages: {', '.join(langs)}")
     except Exception as e:
         click.echo(f"✗ Language check failed: {e}")
@@ -126,12 +162,12 @@ def check():
     # Check Ollama
     try:
         models = ollama.list()
-        click.echo(f"✓ Ollama: Running")
+        click.echo("✓ Ollama: Running")
         model_names = [m['name'] for m in models.get('models', [])]
         if model_names:
             click.echo(f"  Available models: {', '.join(model_names)}")
         else:
-            click.echo(f"  No models installed")
+            click.echo("  No models installed")
     except Exception as e:
         click.echo(f"✗ Ollama: Not running or error ({e})")
 
