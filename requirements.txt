@@ -1,0 +1,19 @@
+# Screen Automation Tool - Python Dependencies
+# For Ubuntu 24.04
+
+# Screen Capture (fast, cross-platform)
+mss>=9.0.0
+
+# Computer Vision and Image Processing
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# OCR (Optical Character Recognition)
+pytesseract>=0.3.10
+
+# Input Control (keyboard and mouse)
+pynput>=1.7.6
+
+# Optional but recommended
+# python-xlib>=0.33  # For better X11 support (not needed with pynput)
