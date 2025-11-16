@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serchify - Product Finder</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h1>Serchify</h1>
+      </div>
+      <button id="settingsBtn" class="icon-btn" title="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v6m0 6v6M3.93 3.93l4.24 4.24m5.66 5.66l4.24 4.24M1 12h6m6 0h6M3.93 20.07l4.24-4.24m5.66-5.66l4.24-4.24" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="tabs">
+        <button class="tab active" data-tab="url">URL Search</button>
+        <button class="tab" data-tab="image">Image Search</button>
+      </div>
+
+      <!-- URL Search Tab -->
+      <div id="urlTab" class="tab-content active">
+        <div class="input-group">
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="Paste Amazon product URL..."
+            autocomplete="off"
+          >
+          <button id="searchBtn" class="primary-btn">Search</button>
+        </div>
+        <p class="hint">Or visit any Amazon product page and click the floating button</p>
+      </div>
+
+      <!-- Image Search Tab -->
+      <div id="imageTab" class="tab-content">
+        <div class="upload-area" id="uploadArea">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m14-7l-5-5-5 5m5-5v12" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <p>Drop image here or click to browse</p>
+          <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        </div>
+        <div id="imagePreview" class="image-preview" style="display: none;">
+          <img id="previewImg" src="" alt="Preview">
+          <button id="removeImageBtn" class="remove-btn">&times;</button>
+        </div>
+        <button id="imageSearchBtn" class="primary-btn" style="display: none;">Search by Image</button>
+      </div>
+    </div>
+
+    <!-- Recent Searches -->
+    <div class="recent-section">
+      <h3>Recent Searches</h3>
+      <div id="recentList" class="recent-list">
+        <p class="empty-state">No recent searches</p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state" style="display: none;">
+      <div class="spinner"></div>
+      <p>Searching marketplaces...</p>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section" style="display: none;">
+      <div class="results-header">
+        <h3>Found <span id="resultsCount">0</span> alternatives</h3>
+        <div class="sort-controls">
+          <label>Sort by:</label>
+          <select id="sortSelect">
+            <option value="confidence">Best Match</option>
+            <option value="price">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
+      </div>
+      <div id="resultsList" class="results-list"></div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settingsPanel" class="settings-panel" style="display: none;">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button id="closeSettingsBtn" class="icon-btn">&times;</button>
+      </div>
+
+      <div class="settings-content">
+        <div class="setting-group">
+          <h4>Marketplaces</h4>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="aliexpress" checked>
+            <span>AliExpress</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="temu" checked>
+            <span>Temu</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="wish" checked>
+            <span>Wish</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="dhgate">
+            <span>DHGate</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="banggood">
+            <span>Banggood</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="platform-checkbox" value="ebay">
+            <span>eBay</span>
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <h4>Privacy & Data</h4>
+          <label class="checkbox-label">
+            <input type="checkbox" id="enableTracking">
+            <span>Enable anonymous usage analytics</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="enableAffiliate">
+            <span>Enable affiliate links (supports development)</span>
+          </label>
+          <p class="setting-note">
+            When enabled, product links may include affiliate codes.
+            <a href="#" id="affiliateDisclosureLink">Learn more</a>
+          </p>
+        </div>
+
+        <div class="setting-group">
+          <h4>Display</h4>
+          <label>
+            <span>Minimum savings to show (%):</span>
+            <input type="number" id="priceThreshold" min="0" max="100" value="10">
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <h4>Data Management</h4>
+          <button id="clearCacheBtn" class="secondary-btn">Clear Cache</button>
+          <button id="clearHistoryBtn" class="secondary-btn">Clear Search History</button>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <button id="saveSettingsBtn" class="primary-btn">Save Settings</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <a href="#" id="privacyLink">Privacy Policy</a>
+      <span>•</span>
+      <a href="#" id="supportLink">Support</a>
+      <span>•</span>
+      <span class="version">v1.0.0</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
