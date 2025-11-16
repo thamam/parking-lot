@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Comprehension Lab - Interactive Tutorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+        .progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">Code Comprehension Lab</h1>
+            <p class="text-blue-100 mt-2">Master the AI-Powered Comprehension Stack</p>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between mb-2 text-sm text-gray-600">
+                <span>Progress</span>
+                <span id="progress-text">Step 0 of 4</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="progress-bar" class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+
+        <!-- Step 0: Introduction & Setup -->
+        <div id="step-0" class="step-content active bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Introduction & Setup</h2>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">The Productivity Paradox</h3>
+                <p class="text-gray-600 mb-4">
+                    AI code generation tools like Copilot and ChatGPT can paradoxically <strong>slow down senior engineers</strong>.
+                    Why? Because understanding unfamiliar code (the "comprehension tax") often takes longer than writing it from scratch.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    The solution isn't to generate less code—it's to <strong>comprehend faster</strong>. This lab will teach you
+                    how to use the modern "Comprehension Stack" to analyze real codebases with AI-powered tools.
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <h4 class="font-semibold text-blue-900 mb-2">The Three Levels of Comprehension</h4>
+                <ul class="text-blue-800 space-y-1">
+                    <li><strong>Level 1 - Macro:</strong> Architecture & system design (10,000-foot view)</li>
+                    <li><strong>Level 2 - Micro:</strong> File/function-level understanding (street view)</li>
+                    <li><strong>Level 3 - Delta:</strong> Pull request & change analysis (what changed and why)</li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Target Codebase Setup</h3>
+                <p class="text-gray-600 mb-4">
+                    We'll use the <strong>Flask</strong> repository (a popular Python web framework) as our specimen for analysis.
+                    First, clone the repository and navigate into it:
+                </p>
+
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('git clone https://github.com/pallets/flask.git')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">git clone https://github.com/pallets/flask.git</pre>
+                </div>
+
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('cd flask')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">cd flask</pre>
+                </div>
+
+                <p class="text-gray-600 text-sm italic">
+                    Note: Make sure you have Python 3.8+ and pip installed before proceeding.
+                </p>
+            </div>
+
+            <button onclick="goToStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                Start Lab →
+            </button>
+        </div>
+
+        <!-- Step 1: Macro-Comprehension -->
+        <div id="step-1" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Macro-Comprehension with archi</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">Get a 10,000-foot view of the entire Flask project architecture.</p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Tool: archi (Hydevs-Corp/archi)</h3>
+                <p class="text-gray-600 mb-4">
+                    <strong>archi</strong> is a Mistral AI-powered tool that analyzes your entire codebase and generates
+                    a high-level architectural summary—not just a file list, but an intelligent map of roles and responsibilities.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install archi</h4>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install archi-ai')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">pip install archi-ai</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 2: Run the analysis</h4>
+                <p class="text-gray-600 mb-2 text-sm">From within the flask directory, run:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('archi . --model mistral')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">archi . --model mistral</pre>
+                </div>
+                <p class="text-gray-500 text-sm italic">This will analyze the codebase and generate an architectural summary.</p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                <p class="text-gray-600 mb-2">Paste the high-level summary from archi here:</p>
+                <textarea id="macro-output" class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example output:
+
+The Flask project is a monolithic Python web framework with key modules for:
+- Request/Response handling (src/flask/wrappers.py)
+- Application context and configuration (src/flask/app.py)
+- Routing and URL dispatching (src/flask/routing.py)
+- Template rendering via Jinja2 integration (src/flask/templating.py)
+- Blueprint architecture for modular applications (src/flask/blueprints.py)
+..."></textarea>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                    <h5 class="font-semibold text-green-900 mb-2">The Value: Macro-Comprehension</h5>
+                    <p class="text-green-800 text-sm">
+                        Notice this isn't just a file list. It's an AI-generated summary of <strong>roles and responsibilities</strong>,
+                        giving you a "map" of the new territory. Instead of spending hours reading docs or grepping files,
+                        you have an instant mental model. This is <strong>Macro-Comprehension</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(0)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Micro-Comprehension -->
+        <div id="step-2" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 2: Micro-Comprehension with aider</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">
+                    Zoom in from the "map" to a specific "street". Use an AI assistant that understands the whole
+                    repository to explain a single, complex file.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Tool: aider (Aider-AI/aider)</h3>
+                <p class="text-gray-600 mb-4">
+                    <strong>aider</strong> is a Git-integrated AI pair programmer. Unlike generic chatbots, it can
+                    read your repository structure and provide context-aware answers based on your actual code.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install aider</h4>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install aider-chat')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">pip install aider-chat</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 2: Start aider</h4>
+                <p class="text-gray-600 mb-2 text-sm">From within the flask directory, run:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('aider')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">aider</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 3: Add file to context</h4>
+                <p class="text-gray-600 mb-2 text-sm">Once aider is running, add the specific file you want to understand:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('/add src/flask/app.py')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">/add src/flask/app.py</pre>
+                </div>
+                <p class="text-gray-500 text-sm italic">Note: We're using app.py instead of request.py as it's more central to Flask's architecture.</p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 4: Query the AI</h4>
+                <p class="text-gray-600 mb-2 text-sm">Ask a deep, repository-aware question:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('Explain the purpose of the Flask class and list its most important methods, based on this file.')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">Explain the purpose of the Flask class and list its most important methods, based on this file.</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                <p class="text-gray-600 mb-2">Paste Aider's explanation here:</p>
+                <textarea id="micro-output" class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example output:
+
+The Flask class is the central application object that coordinates all components of a Flask web application.
+
+Key methods:
+- __init__(): Initializes the application with configuration
+- route(): Decorator for registering URL routes
+- add_url_rule(): Programmatically adds routing rules
+- run(): Starts the development server
+- before_request(): Registers functions to run before each request
+- errorhandler(): Registers custom error handlers
+..."></textarea>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                    <h5 class="font-semibold text-green-900 mb-2">The Value: Micro-Comprehension</h5>
+                    <p class="text-green-800 text-sm">
+                        This is <strong>Micro-Comprehension</strong>. This is not a standard chatbot. By using <code class="bg-green-100 px-1 rounded">/add</code>,
+                        you gave the AI precise, repository-aware context. It's answering based only on the project's actual code,
+                        not generic knowledge, which is critical for accurate understanding. You can now drill into any file with confidence.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Delta-Comprehension -->
+        <div id="step-3" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 3: Delta-Comprehension with pr-agent</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">
+                    Understand <strong>why</strong> a change was made. The hardest comprehension task is a complex
+                    Pull Request. We'll simulate how pr-agent solves this.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Tool: pr-agent (qodo-ai/pr-agent)</h3>
+                <p class="text-gray-600 mb-4">
+                    <strong>pr-agent</strong> is an AI pull request assistant that runs on GitHub and responds to
+                    commands in PR comments. It's complex to set up for a demo, so we'll simulate the experience here.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-3">Simulation: Complex PR Review</h4>
+
+                <!-- Before State -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">Before: The Confusing Diff</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        A reviewer encounters this complex change across 3 files:
+                    </p>
+                    <div class="code-block p-4 mb-4 overflow-x-auto">
+                        <pre class="text-xs">diff --git a/src/cache/redis_cache.py b/src/cache/redis_cache.py
+new file mode 100644
+index 0000000..a1b2c3d
+--- /dev/null
++++ b/src/cache/redis_cache.py
+@@ -0,0 +1,45 @@
++import redis
++from typing import Optional, Any
++
++class RedisCache:
++    """Abstraction layer for Redis caching operations."""
++
++    def __init__(self, host: str = 'localhost', port: int = 6379):
++        self.client = redis.Redis(host=host, port=port, decode_responses=True)
++
++    def get(self, key: str) -> Optional[Any]:
++        return self.client.get(key)
++
++    def set(self, key: str, value: Any, ttl: int = 3600) -> bool:
++        return self.client.setex(key, ttl, value)
++
++    def delete(self, key: str) -> bool:
++        return self.client.delete(key) > 0
+
+diff --git a/src/services/auth_service.py b/src/services/auth_service.py
+index d4e5f6g..h7i8j9k 100644
+--- a/src/services/auth_service.py
++++ b/src/services/auth_service.py
+@@ -1,15 +1,18 @@
+-import redis
+ from src.models.user import User
++from src.cache.redis_cache import RedisCache
+
+ class AuthService:
+-    def __init__(self):
+-        self.redis_client = redis.Redis(host='localhost', port=6379)
++    def __init__(self, cache: RedisCache):
++        self.cache = cache
+
+-    def login(self, username: str, password: str) -> bool:
++    def login(self, username: str, password: str, ip_address: str) -> bool:
+         user = User.authenticate(username, password)
+         if user:
+-            session_key = f"session:{user.id}"
+-            self.redis_client.setex(session_key, 3600, user.id)
++            session_key = f"session:{user.id}"
++            self.cache.set(session_key, user.id, ttl=3600)
++            user.last_login_ip = ip_address
++            user.save()
+             return True
+         return False
+
+diff --git a/src/models/user.py b/src/models/user.py
+index k1l2m3n..o4p5q6r 100644
+--- a/src/models/user.py
++++ b/src/models/user.py
+@@ -5,6 +5,7 @@ class User(db.Model):
+     username = db.Column(db.String(80), unique=True, nullable=False)
+     email = db.Column(db.String(120), unique=True, nullable=False)
+     password_hash = db.Column(db.String(128))
++    last_login_ip = db.Column(db.String(45))  # IPv6 max length
+
+     @staticmethod
+     def authenticate(username: str, password: str):</pre>
+                    </div>
+                    <p class="text-gray-600 text-sm italic">
+                        The reviewer is confused: Why so many changes? What's the actual purpose? Is there a hidden bug fix?
+                    </p>
+                </div>
+
+                <!-- Magic Command -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">The Magic Command</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        The reviewer types this command in the GitHub PR comment:
+                    </p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-3">
+                        <code class="text-yellow-900 font-mono">/describe</code>
+                    </div>
+                </div>
+
+                <!-- After State -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">After: AI-Generated Summary</h5>
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">PR Title</h6>
+                            <p class="text-gray-700">Refactor: Optimize Caching for User Authentication</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">Summary</h6>
+                            <p class="text-gray-700 text-sm">
+                                This PR introduces a new <code class="bg-gray-100 px-1 rounded">RedisCache</code> class
+                                to abstract caching logic and updates the <code class="bg-gray-100 px-1 rounded">AuthService</code>
+                                to use it. This simplifies the login flow, improves testability by allowing cache injection,
+                                and fixes a bug where session expiration wasn't properly set. Additionally, the
+                                <code class="bg-gray-100 px-1 rounded">User</code> model now tracks the last login IP
+                                for security audit purposes.
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">Code Walkthrough</h6>
+                            <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                                <li><strong>redis_cache.py:</strong> New abstraction layer for Redis operations with TTL support</li>
+                                <li><strong>auth_service.py:</strong> Refactored to use dependency injection for better testability</li>
+                                <li><strong>user.py:</strong> Added <code class="bg-gray-100 px-1 rounded">last_login_ip</code> field for security tracking</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6 class="font-semibold text-gray-800">Type of Change</h6>
+                            <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Refactoring</span>
+                            <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Bug Fix</span>
+                            <span class="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">Enhancement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drill-down -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">Drill-Down Question</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        The reviewer has one more question. They type:
+                    </p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-3">
+                        <code class="text-yellow-900 font-mono">/ask Why was the 'User' model modified in this change?</code>
+                    </div>
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <h6 class="font-semibold text-gray-800 mb-2">AI Response</h6>
+                        <p class="text-gray-700 text-sm">
+                            The <code class="bg-gray-100 px-1 rounded">User</code> model was modified to add the
+                            <code class="bg-gray-100 px-1 rounded">last_login_ip</code> field, which is now being
+                            populated by the updated <code class="bg-gray-100 px-1 rounded">AuthService.login()</code>
+                            method on successful authentication. This enables security audit trails and helps detect
+                            suspicious login patterns. The field supports both IPv4 and IPv6 addresses (max 45 characters).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                    <h5 class="font-semibold text-green-900 mb-2">The Value: Delta-Comprehension</h5>
+                    <p class="text-green-800 text-sm">
+                        This is <strong>Delta-Comprehension</strong>. The AI read the entire diff and explained the
+                        <strong>intent and scope</strong>, saving the human reviewer 30+ minutes of cognitive load.
+                        The <code class="bg-green-100 px-1 rounded">/ask</code> command allows them to interrogate
+                        the change directly. No more piecing together changes across multiple files—the AI provides
+                        the "why" automatically.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(2)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Conclusion -->
+        <div id="step-4" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Conclusion</h2>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 border-l-4 border-green-500 p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Congratulations!</h3>
+                <p class="text-gray-700">
+                    You've completed the Code Comprehension Stack lab.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">What You Learned</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            1
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Macro-Comprehension with archi</h4>
+                            <p class="text-gray-600 text-sm">
+                                Generated a high-level architectural map of the entire Flask codebase—understanding
+                                the system design in minutes instead of hours.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            2
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Micro-Comprehension with aider</h4>
+                            <p class="text-gray-600 text-sm">
+                                Zoomed into specific files with repository-aware AI assistance—getting precise,
+                                context-specific explanations instead of generic answers.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            3
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Delta-Comprehension with pr-agent</h4>
+                            <p class="text-gray-600 text-sm">
+                                Simulated AI-powered pull request review—understanding the "why" and "what" of
+                                complex changes with intelligent summaries and Q&A.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-900 text-white rounded-lg p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-3">The Future of Senior Development</h3>
+                <p class="text-blue-100 mb-4">
+                    The future isn't just about generating code faster—it's about <strong>understanding it deeper</strong>.
+                </p>
+                <p class="text-blue-100">
+                    As codebases grow and AI generates more code, the bottleneck shifts from writing to comprehension.
+                    These tools are the new standard for reducing cognitive load and maintaining high-quality understanding
+                    at scale.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Next Steps</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Apply these tools to your own codebase
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Integrate pr-agent into your team's GitHub workflow
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Use aider as your daily pair programmer for new features
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Run archi when onboarding to new projects
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Resources</h3>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li><strong>archi:</strong> <a href="https://github.com/Hydevs-Corp/archi" class="text-blue-600 hover:underline">github.com/Hydevs-Corp/archi</a></li>
+                    <li><strong>aider:</strong> <a href="https://github.com/Aider-AI/aider" class="text-blue-600 hover:underline">github.com/Aider-AI/aider</a></li>
+                    <li><strong>pr-agent:</strong> <a href="https://github.com/qodo-ai/pr-agent" class="text-blue-600 hover:underline">github.com/qodo-ai/pr-agent</a></li>
+                </ul>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="goToStep(3)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(0)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Restart Lab
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">
+                Code Comprehension Lab | Built for developers who understand deeper, not just faster
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let currentStep = 0;
+
+        function goToStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+
+            // Show new step
+            document.getElementById(`step-${step}`).classList.add('active');
+
+            // Update progress
+            currentStep = step;
+            updateProgress();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `Step ${currentStep} of 4`;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-gray-700');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-gray-700');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Initialize progress on load
+        updateProgress();
+    </script>
+</body>
+</html>
