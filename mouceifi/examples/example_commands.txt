@@ -1,0 +1,40 @@
+# Example Commands for Mouceifi
+
+# Simple movement
+move to x=100 y=100
+move to x=500, y=300
+
+# Relative movement
+move 100 pixels down
+move 50 pixels right
+move 100 pixels down and 50 pixels right
+
+# Click actions
+left click
+right click
+middle click
+double click
+right click at current position
+
+# Movement with click
+move to x=500 y=300 and then left click
+move to x=100 y=100 then right click
+
+# Drag operations
+drag from x=100 y=100 to x=300 y=300
+drag from x=0 y=0 to x=500 y=500
+
+# Scrolling
+scroll down
+scroll up
+scroll down by 5
+scroll up by 10
+scroll left
+scroll right by 3
+
+# Complex sequences
+move to x=200 y=200 then left click then move 50 pixels right then double click
+move to x=100 y=100 and drag to x=300 y=300
+
+# Testing with dry-run mode (add --dry-run flag)
+# This will show what would happen without actually moving the mouse
