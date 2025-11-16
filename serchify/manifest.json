@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Serchify - Cross-Platform Product Finder",
+  "version": "1.0.0",
+  "description": "Find Amazon products on AliExpress, Temu, and other marketplaces with reverse image search support",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.amazon.com/*",
+    "https://*.aliexpress.com/*",
+    "https://*.temu.com/*",
+    "https://*.wish.com/*",
+    "https://*.dhgate.com/*",
+    "https://*.banggood.com/*",
+    "https://*.ebay.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.amazon.com/*"],
+      "js": ["content/amazon-detector.js", "content/overlay.js"],
+      "css": ["content/overlay.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup/popup.html"],
+      "matches": ["https://*.amazon.com/*"]
+    }
+  ]
+}
