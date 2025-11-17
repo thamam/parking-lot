@@ -1,0 +1,5 @@
+pyautogui>=0.9.54
+python-xlib>=0.33; sys_platform == 'linux'
+pynput>=1.7.6
+pillow>=10.0.0
+typing-extensions>=4.5.0
