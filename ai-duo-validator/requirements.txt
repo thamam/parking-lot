@@ -1,0 +1,19 @@
+# AI Duo Validator Dependencies
+
+# CLI framework
+click>=8.1.0,<9.0.0
+
+# Terminal colors
+colorama>=0.4.6,<1.0.0
+
+# Date/time handling
+python-dateutil>=2.8.2,<3.0.0
+
+# Testing
+pytest>=7.4.0,<8.0.0
+pytest-cov>=4.1.0,<5.0.0
+
+# Code quality (optional, for development)
+black>=23.0.0,<24.0.0
+flake8>=6.0.0,<7.0.0
+mypy>=1.5.0,<2.0.0
