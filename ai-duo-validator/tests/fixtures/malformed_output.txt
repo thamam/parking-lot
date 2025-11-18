@@ -1,0 +1,17 @@
+I've completed the implementation.
+
+==BEGIN_AGENT_OUTPUT==
+{
+  "agent": "A",
+  "status": "awaiting_validation",
+  "work_product": {
+    "type": "code",
+    "description": "Implemented feature"
+    // Missing comma here - invalid JSON
+    "files_modified": ["file1.py"]
+  }
+  "validation_request": "Please review"
+}
+==END_AGENT_OUTPUT==
+
+This output contains malformed JSON for testing error handling.
