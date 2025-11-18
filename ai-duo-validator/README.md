@@ -8,6 +8,24 @@ AI Duo Validator is an orchestration framework that coordinates validation betwe
 
 The orchestrator parses terminal output, extracts structured handoffs, and routes messages between agents through a CLI interface.
 
+## 🚀 Try It Now! (30 seconds)
+
+**Run the automated demo to see it in action:**
+
+```bash
+cd ai-duo-validator
+pip install -r requirements.txt
+python demo_auto.py
+```
+
+**Or try the interactive demo:**
+
+```bash
+python demo.py
+```
+
+Both demos show a complete validation loop using real test fixtures. See [QUICKSTART.md](QUICKSTART.md) for details.
+
 ## Why AI Duo Validator?
 
 **Single AI Agent Limitations:**
