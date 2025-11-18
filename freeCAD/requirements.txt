@@ -1,0 +1,14 @@
+# FreeCAD LLM Framework Requirements
+
+# Core dependencies
+requests>=2.31.0  # For LLM API calls
+
+# Optional dependencies for enhanced functionality
+# pydantic>=2.0.0  # For advanced validation (optional)
+
+# Note: FreeCAD must be installed separately
+# FreeCAD 0.20+ is required but not available via pip
+# Install from: https://www.freecad.org/downloads.php
+
+# Development dependencies (for testing and examples)
+# unittest is part of Python standard library
