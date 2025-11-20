@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Comprehension Lab - Interactive Tutorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+        .progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+        .tool-option {
+            display: none;
+        }
+        .tool-option.active {
+            display: block;
+        }
+        .tool-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .tool-card.selected {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">Code Comprehension Lab</h1>
+            <p class="text-blue-100 mt-2">Master the AI-Powered Comprehension Stack</p>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between mb-2 text-sm text-gray-600">
+                <span>Progress</span>
+                <span id="progress-text">Step 0 of 4</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="progress-bar" class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+
+        <!-- Step 0: Introduction & Setup -->
+        <div id="step-0" class="step-content active bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Introduction & Setup</h2>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">The Productivity Paradox</h3>
+                <p class="text-gray-600 mb-4">
+                    AI code generation tools like Copilot and ChatGPT can paradoxically <strong>slow down senior engineers</strong>.
+                    Why? Because understanding unfamiliar code (the "comprehension tax") often takes longer than writing it from scratch.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    The solution isn't to generate less code—it's to <strong>comprehend faster</strong>. This lab will teach you
+                    how to use the modern "Comprehension Stack" to analyze real codebases with AI-powered tools.
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <h4 class="font-semibold text-blue-900 mb-2">The Three Levels of Comprehension</h4>
+                <ul class="text-blue-800 space-y-1">
+                    <li><strong>Level 1 - Macro:</strong> Architecture & system design (10,000-foot view)</li>
+                    <li><strong>Level 2 - Micro:</strong> File/function-level understanding (street view)</li>
+                    <li><strong>Level 3 - Delta:</strong> Pull request & change analysis (what changed and why)</li>
+                </ul>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Target Codebase Setup</h3>
+                <p class="text-gray-600 mb-4">
+                    We'll use the <strong>Flask</strong> repository (a popular Python web framework) as our specimen for analysis.
+                    First, clone the repository and navigate into it:
+                </p>
+
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('git clone https://github.com/pallets/flask.git')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">git clone https://github.com/pallets/flask.git</pre>
+                </div>
+
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('cd flask')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">cd flask</pre>
+                </div>
+
+                <p class="text-gray-600 text-sm italic">
+                    Note: Make sure you have Python 3.8+ and pip installed before proceeding.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">API Setup (Required for Aider)</h3>
+
+                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4">
+                    <h4 class="font-semibold text-orange-900 mb-2">💰 Cost Warning</h4>
+                    <p class="text-orange-800 text-sm mb-2">
+                        If you choose <strong>Aider</strong> (Step 1 or Step 2), it requires an LLM API key and will charge your account.
+                        Typical costs: <strong>$0.01-0.10 per query</strong>.
+                    </p>
+                    <p class="text-orange-700 text-sm">
+                        <strong>Free alternatives:</strong> Use "emerge" (Python visualization) or "Manual LLM" (copy/paste to free ChatGPT/Claude web interface).
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-2">If Using Aider: Configure an API Key</h4>
+                    <p class="text-gray-600 mb-3 text-sm">Choose one provider and set the environment variable:</p>
+
+                    <div class="space-y-3">
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option A: OpenAI (GPT-4, GPT-3.5)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('export OPENAI_API_KEY=your-key-here')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">export OPENAI_API_KEY=your-key-here</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Get key: <a href="https://platform.openai.com/api-keys" class="text-blue-600 hover:underline" target="_blank">platform.openai.com/api-keys</a></p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option B: Anthropic (Claude)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('export ANTHROPIC_API_KEY=your-key-here')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">export ANTHROPIC_API_KEY=your-key-here</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Get key: <a href="https://console.anthropic.com/settings/keys" class="text-blue-600 hover:underline" target="_blank">console.anthropic.com/settings/keys</a></p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option C: Free Local Models (No Cost!)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('aider --model ollama/qwen2.5-coder:7b')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">aider --model ollama/qwen2.5-coder:7b</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Requires: <a href="https://ollama.com/" class="text-blue-600 hover:underline" target="_blank">Ollama installed locally</a> (Free, runs on your machine)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="text-sm text-gray-600">
+                    <summary class="cursor-pointer font-semibold hover:text-gray-800">Check which API key aider is using</summary>
+                    <div class="mt-2 bg-gray-50 p-3 rounded">
+                        <p class="mb-2">Run these commands to check:</p>
+                        <code class="block bg-gray-800 text-gray-100 p-2 rounded text-xs mb-1">env | grep -i "api_key"</code>
+                        <code class="block bg-gray-800 text-gray-100 p-2 rounded text-xs">cat ~/.aider.conf.yml</code>
+                    </div>
+                </details>
+            </div>
+
+            <button onclick="goToStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                Start Lab →
+            </button>
+        </div>
+
+        <!-- Step 1: Macro-Comprehension (Hybrid) -->
+        <div id="step-1" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 1: Macro-Comprehension</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">Get a 10,000-foot view of the entire Flask project architecture using one of several tools.</p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Choose Your Tool</h3>
+                <p class="text-gray-600 mb-4">
+                    Select the macro-comprehension tool that best fits your environment and preferences:
+                </p>
+
+                <!-- Tool Selector Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <!-- Option A: Mermaid Diagrams -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('mermaid')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">Mermaid Diagrams</h4>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Recommended</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">LLM generates diagram code, you render it visually. Most reliable option.</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">📊 Visual diagrams</span>
+                            <span class="text-green-600">✓ Free</span>
+                        </div>
+                    </div>
+
+                    <!-- Option B: emerge -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('emerge')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">emerge (Interactive)</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Visual</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Browser-based interactive dependency visualization.</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">⭐ 977 stars</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-green-600">✓ Free</span>
+                        </div>
+                    </div>
+
+                    <!-- Option C: pydeps -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('pydeps')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">pydeps (Graph)</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Visual</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Python dependency graphs as SVG/PNG images.</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">⭐ 1.8k stars</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-green-600">✓ Free</span>
+                        </div>
+                    </div>
+
+                    <!-- Option D: Aider -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('aider')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">Aider (Text-based)</h4>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Text Analysis</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">AI prose description, not visual. Better for Step 2 (Micro).</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">⭐ 13.5k stars</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-orange-600">💰 $0.01-0.10/query</span>
+                        </div>
+                    </div>
+
+                    <!-- Option E: Manual LLM -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('manual')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">Manual LLM (Text)</h4>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Flexible</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Text description via ChatGPT/Claude. No visuals.</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">💡 Works with any LLM</span>
+                            <span class="text-green-600">✓ Free (web UI)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option A: Mermaid Diagrams -->
+            <div id="tool-mermaid" class="tool-option">
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                    <p class="text-sm text-green-900">
+                        <strong>Why Mermaid?</strong> Most reliable visual approach. Uses free LLM to generate diagram code,
+                        then renders it as an actual visual architecture diagram. No installation, no errors, always works.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Gather Context</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Get the directory structure and key file info:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('tree -L 3 -I \'__pycache__|*.pyc|tests|.git\' src/ && echo \"\\n=== Key Files ===\" && head -30 src/flask/app.py src/flask/blueprints.py src/flask/routing.py')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">tree -L 3 -I '__pycache__|*.pyc|tests|.git' src/ && echo "\n=== Key Files ===" && head -30 src/flask/app.py src/flask/blueprints.py src/flask/routing.py</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Mermaid Diagram</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Copy this prompt + the output from above into ChatGPT/Claude (free web interface):</p>
+                    <div class="bg-gray-100 border border-gray-300 rounded p-3 text-sm mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <strong class="text-gray-800">Prompt to use:</strong>
+                            <button class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs" onclick="copyToClipboard('Based on this Flask codebase structure and file headers, create a Mermaid architecture diagram showing:\n1. Main modules and their responsibilities\n2. How modules interact (dependencies/imports)\n3. Data flow and key relationships\n\nUse Mermaid graph syntax. Make it clear and hierarchical.\n\n[Paste your tree and head output here]')">
+                                Copy
+                            </button>
+                        </div>
+                        <p class="font-mono text-gray-700 text-xs">
+                            Based on this Flask codebase structure and file headers, create a Mermaid architecture diagram showing:<br>
+                            1. Main modules and their responsibilities<br>
+                            2. How modules interact (dependencies/imports)<br>
+                            3. Data flow and key relationships<br><br>
+                            Use Mermaid graph syntax. Make it clear and hierarchical.<br><br>
+                            [Paste your tree and head output here]
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 3: Render the Diagram</h4>
+                    <p class="text-gray-600 mb-2 text-sm">The LLM will output Mermaid code like:</p>
+                    <div class="bg-gray-100 rounded p-3 text-xs mb-3 font-mono">
+                        graph TD<br>
+                        &nbsp;&nbsp;App[Flask App] --> Routing[Routing]<br>
+                        &nbsp;&nbsp;App --> Blueprints[Blueprints]<br>
+                        &nbsp;&nbsp;Routing --> Views[Views]<br>
+                        &nbsp;&nbsp;...
+                    </div>
+                    <p class="text-gray-600 mb-2 text-sm">Copy that code and paste it into:</p>
+                    <div class="flex items-center space-x-2">
+                        <a href="https://mermaid.live" target="_blank" class="text-blue-600 hover:underline font-semibold">mermaid.live</a>
+                        <span class="text-gray-500 text-sm">← Opens Mermaid Live Editor</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">You'll instantly see a visual diagram! You can download it as PNG/SVG.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the visual diagram:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The Mermaid diagram shows Flask's hierarchical architecture:
+- Central Flask App orchestrates all components
+- Routing system connects URLs to view functions
+- Blueprints provide modular sub-applications
+- Context management handles request/app scope
+- Clear separation between WSGI layer and application logic
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option B: pydeps -->
+            <div id="tool-pydeps" class="tool-option">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="text-sm text-blue-900">
+                        <strong>Why pydeps?</strong> Automatically generates dependency graphs from Python imports.
+                        Creates clean SVG/PNG images showing module relationships.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install pydeps</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install pydeps')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install pydeps</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Dependency Graph</h4>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pydeps src/flask --max-bacon=2 --cluster')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pydeps src/flask --max-bacon=2 --cluster</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">This creates flask.svg showing module dependencies. Open it in your browser.</p>
+                    <p class="text-gray-600 text-sm mt-2"><strong>Options:</strong> <code class="bg-gray-100 px-1 rounded">--max-bacon=2</code> limits depth, <code class="bg-gray-100 px-1 rounded">--cluster</code> groups related modules</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the dependency graph:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The pydeps graph reveals:
+- app.py is the central hub with most dependencies
+- blueprints.py has minimal external dependencies (good modularity)
+- helpers.py is widely used across many modules
+- Circular dependencies between ctx.py and globals.py
+- Clear layering: WSGI → App → Routing → Views
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option C: emerge -->
+            <div id="tool-emerge" class="tool-option">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="text-sm text-blue-900">
+                        <strong>Why emerge?</strong> Creates beautiful, interactive browser-based visualizations showing
+                        dependency graphs, file relationships, and code metrics. Generates GraphML files for professional diagram tools.
+                    </p>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-sm">
+                    <p class="text-yellow-900"><strong>⚠️ Known Issue:</strong> emerge may fail with "ModuleNotFoundError: No module named 'pkg_resources'"</p>
+                    <p class="text-yellow-800 mt-1"><strong>Fix:</strong> Run <code class="bg-yellow-100 px-1 rounded font-mono">pip install setuptools</code> first</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install emerge (with fix)</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install setuptools emerge-viz')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install setuptools emerge-viz</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Configuration Template</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Create a configuration file for your Flask analysis:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('emerge --add-config PY')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">emerge --add-config PY</pre>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">This creates <code class="bg-gray-100 px-1 rounded">py-template.yaml</code>. Rename it and customize:</p>
+                    <div class="code-block p-4 mb-3">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('mv py-template.yaml emerge-config.yaml')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">mv py-template.yaml emerge-config.yaml</pre>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">Edit <code class="bg-gray-100 px-1 rounded">emerge-config.yaml</code> to set:</p>
+                    <ul class="text-sm text-gray-600 list-disc list-inside ml-4 mt-2">
+                        <li>Project name: "flask"</li>
+                        <li>Source directory: <code class="bg-gray-100 px-1 rounded">./src/flask</code></li>
+                        <li>Output directory: <code class="bg-gray-100 px-1 rounded">./emerge-output</code></li>
+                        <li>Ignore patterns: <code class="bg-gray-100 px-1 rounded">__pycache__, *.pyc, tests</code></li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 3: Run Analysis</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Create output directory and run emerge:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('mkdir -p emerge-output && emerge -c emerge-config.yaml -v')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">mkdir -p emerge-output && emerge -c emerge-config.yaml -v</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">Should complete in ~400ms. Opens emerge-output/index.html in your browser to see the visualization.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Understanding the Results</h4>
+
+                    <div class="bg-gray-50 rounded p-3 mb-3 text-sm">
+                        <p class="font-semibold text-gray-800 mb-2">Code Quality Indicators:</p>
+                        <ul class="text-gray-700 space-y-1 list-disc list-inside">
+                            <li><strong>Modularity (0.0-1.0):</strong> 0.5+ is good - shows decent separation of concerns</li>
+                            <li><strong>Communities:</strong> Groups of related files (e.g., routing cluster, template cluster)</li>
+                            <li><strong>Fan-in:</strong> How many modules import this file (high = widely used utility)</li>
+                            <li><strong>Fan-out:</strong> How many modules this file imports (high = coordinator/orchestrator)</li>
+                            <li><strong>Avg methods/file:</strong> 5-10 is reasonable, >20 may be too complex</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50 rounded p-3 mb-3 text-sm">
+                        <p class="font-semibold text-blue-800 mb-2">What You'll See:</p>
+                        <ul class="text-blue-700 space-y-1 list-disc list-inside">
+                            <li><strong>Dependency Graph:</strong> Visual network showing how modules connect</li>
+                            <li><strong>Community Detection:</strong> Color-coded clusters of related functionality</li>
+                            <li><strong>GraphML Files:</strong> Import into yEd, Gephi, or Cytoscape for professional diagrams</li>
+                            <li><strong>Metrics Dashboard:</strong> Quantitative code quality scores</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-green-50 rounded p-3 text-sm">
+                        <p class="font-semibold text-green-800 mb-2">Example Insights for Flask:</p>
+                        <ul class="text-green-700 space-y-1 list-disc list-inside">
+                            <li><code class="bg-green-100 px-1 rounded">app.py</code> will have high fan-out (central coordinator)</li>
+                            <li><code class="bg-green-100 px-1 rounded">helpers.py</code> will have high fan-in (widely used utilities)</li>
+                            <li>You'll see ~5-10 communities (routing, blueprints, templating, etc.)</li>
+                            <li>Circular dependencies will be highlighted in red (if any)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the visualization:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+Modularity: 0.5 - Good separation of concerns
+Communities: 8 clusters identified (routing, templates, config, etc.)
+Central coordinator: app.py (fan-out: 15, imports most other modules)
+Widely used utility: helpers.py (fan-in: 22, imported by many modules)
+No circular dependencies detected - clean architecture
+Average 6 methods/file - reasonable complexity
+
+Key insight: Flask's architecture is well-modularized with clear separation between
+routing, templating, and request handling subsystems.
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option D: Aider -->
+            <div id="tool-aider" class="tool-option">
+                <div class="bg-gray-50 border-l-4 border-gray-500 p-4 mb-4">
+                    <p class="text-sm text-gray-900">
+                        <strong>Note:</strong> Aider provides text descriptions, not visual diagrams.
+                        For macro-comprehension, visual tools (Mermaid, pydeps, emerge) are more effective.
+                        Aider works best for Step 2 (Micro-Comprehension) where you ask specific questions about code.
+                    </p>
+                </div>
+
+                <div class="bg-orange-50 border border-orange-200 rounded p-3 mb-4 text-sm">
+                    <p class="text-orange-900"><strong>⚠️ Reminder:</strong> Aider requires an API key (see Step 0 setup above). Each query costs ~$0.01-0.10 depending on your provider.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install Aider</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install aider-chat')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install aider-chat</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Run Architecture Analysis</h4>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory, start aider:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('aider')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">aider</pre>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-3 text-sm">
+                        <p class="text-yellow-900 mb-2"><strong>Setup prompts:</strong> Aider will ask a few questions first:</p>
+                        <ol class="list-decimal list-inside text-yellow-800 space-y-1">
+                            <li>".gitignore?" → Type <code class="bg-yellow-100 px-1 rounded font-mono">Y</code> (recommended)</li>
+                            <li>"Add files to chat?" → Type <code class="bg-yellow-100 px-1 rounded font-mono">Y</code> or <code class="bg-yellow-100 px-1 rounded font-mono">A</code> (All) to let it add relevant files</li>
+                        </ol>
+                        <p class="text-yellow-800 mt-2"><strong>Wait for the prompt:</strong> Once you see <code class="bg-yellow-100 px-1 rounded font-mono">&gt;</code>, aider is ready for your question.</p>
+                    </div>
+
+                    <p class="text-gray-600 mb-2 text-sm"><strong>Step 3:</strong> Once aider shows the <code class="bg-gray-100 px-1 rounded font-mono">&gt;</code> prompt, paste this question:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details.')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details.</pre>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3 mb-3 text-sm">
+                        <p class="text-blue-900"><strong>💡 Pro tip:</strong> If aider keeps asking about files, type <code class="bg-blue-100 px-1 rounded font-mono">N</code> (No) or <code class="bg-blue-100 px-1 rounded font-mono">S</code> (Skip all) to stop the file prompts, then ask your architecture question.</p>
+                    </div>
+
+                    <p class="text-gray-600 text-sm mt-3"><strong>Expected output:</strong> Aider should now generate a comprehensive architectural overview explaining Flask's module structure, responsibilities, and interactions.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Paste Aider's architectural analysis here:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example output:
+
+Flask follows a modular monolithic architecture with these key components:
+
+Core Application (src/flask/app.py): Central Flask class managing the WSGI app
+Request/Response (src/flask/wrappers.py): HTTP abstraction layer
+Routing (src/flask/routing.py): URL-to-view mapping system
+Templating (src/flask/templating.py): Jinja2 integration
+Blueprints (src/flask/blueprints.py): Modular application components
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option B: emerge -->
+            <div id="tool-emerge" class="tool-option">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="text-sm text-blue-900">
+                        <strong>Why emerge?</strong> Creates beautiful, interactive browser-based visualizations showing
+                        dependency graphs, file relationships, and code metrics.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install emerge</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install emerge-viz')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install emerge-viz</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Visualization</h4>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('emerge --language python --output-directory ./emerge-output src/')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">emerge --language python --output-directory ./emerge-output src/</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">This generates an interactive HTML visualization. Open the generated index.html in your browser.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the visualization:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The visualization shows Flask has a central 'app' module with high coupling.
+Key clusters: routing, templating, context management, and blueprint subsystems.
+The dependency graph reveals clean separation between request handling and response generation.
+Metrics show most complexity in the routing and application modules.
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option C: dependency-cruiser -->
+            <div id="tool-depcruiser" class="tool-option">
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
+                    <p class="text-sm text-yellow-900">
+                        <strong>Note:</strong> dependency-cruiser is designed for JavaScript/TypeScript projects.
+                        Since Flask is Python, this tool won't work for this lab. Use it for your JS/TS codebases instead.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install dependency-cruiser</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('npm install -g dependency-cruiser')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">npm install -g dependency-cruiser</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Dependency Graph (For JS/TS Projects)</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Example for a Node.js/TypeScript project:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('depcruise src --output-type dot | dot -T svg > dependencies.svg')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">depcruise src --output-type dot | dot -T svg > dependencies.svg</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">Requires Graphviz installed. Opens dependencies.svg to view the graph.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">For This Lab</h4>
+                    <p class="text-gray-600 mb-2">Since Flask is Python, choose Aider or emerge instead. Use dependency-cruiser when analyzing JavaScript/TypeScript codebases at your work.</p>
+                </div>
+            </div>
+
+            <!-- Option D: Manual LLM -->
+            <div id="tool-manual" class="tool-option">
+                <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-4">
+                    <p class="text-sm text-purple-900">
+                        <strong>Why Manual?</strong> Most flexible approach. Works with any LLM (ChatGPT, Claude, etc.)
+                        and any codebase. Great for understanding the prompting patterns.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Gather Context</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Get the directory structure:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('tree -L 3 -I \'__pycache__|*.pyc|tests\' src/')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">tree -L 3 -I '__pycache__|*.pyc|tests' src/</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">If tree isn't installed: <code class="bg-gray-100 px-1 rounded">find src/ -type f -name "*.py" | head -30</code></p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Get Key File Summaries</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Get a quick overview of main modules:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('head -50 src/flask/app.py src/flask/blueprints.py src/flask/routing.py')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">head -50 src/flask/app.py src/flask/blueprints.py src/flask/routing.py</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 3: Query Your LLM</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Copy this prompt into ChatGPT/Claude along with the output from above:</p>
+                    <div class="bg-gray-100 border border-gray-300 rounded p-3 text-sm">
+                        <p class="font-mono text-gray-800">
+                            I'm analyzing the Flask web framework codebase. Based on this directory structure and these file headers,
+                            provide a high-level architectural overview. Describe:<br><br>
+                            1. The main modules and their responsibilities<br>
+                            2. How these modules interact<br>
+                            3. The overall architectural pattern (monolithic, modular, etc.)<br>
+                            4. Key design decisions you can infer<br><br>
+                            [Paste your tree and head output here]
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Paste the LLM's architectural analysis here:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example output from Claude/ChatGPT:
+
+Based on the structure, Flask follows a modular monolithic architecture:
+
+1. Core Application Module (app.py): Central orchestrator
+2. Request/Response Layer (wrappers.py): HTTP abstraction
+3. Routing Engine (routing.py): URL-to-handler mapping
+..."></textarea>
+                </div>
+            </div>
+
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-6 mb-6">
+                <h5 class="font-semibold text-green-900 mb-2">The Value: Macro-Comprehension</h5>
+                <p class="text-green-800 text-sm">
+                    Regardless of which tool you chose, you now have a <strong>mental map</strong> of the codebase.
+                    This isn't just a file list—it's an understanding of <strong>roles, responsibilities, and relationships</strong>.
+                    You went from zero to high-level comprehension in minutes instead of hours. This is <strong>Macro-Comprehension</strong>.
+                </p>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(0)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Micro-Comprehension -->
+        <div id="step-2" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 2: Micro-Comprehension with aider</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">
+                    Zoom in from the "map" to a specific "street". Use an AI assistant that understands the whole
+                    repository to explain a single, complex file.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Tool: aider (Aider-AI/aider)</h3>
+                <p class="text-gray-600 mb-4">
+                    <strong>aider</strong> is a Git-integrated AI pair programmer. Unlike generic chatbots, it can
+                    read your repository structure and provide context-aware answers based on your actual code.
+                </p>
+            </div>
+
+            <div class="bg-orange-50 border border-orange-200 rounded p-3 mb-6 text-sm">
+                <p class="text-orange-900"><strong>⚠️ Reminder:</strong> Aider requires an API key (see Step 0 setup). Each query costs ~$0.01-0.10. If you haven't set up your API key yet, go back to Step 0.</p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install aider</h4>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install aider-chat')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">pip install aider-chat</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 2: Start aider</h4>
+                <p class="text-gray-600 mb-2 text-sm">From within the flask directory, run:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('aider')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">aider</pre>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded p-3 mb-3 text-sm">
+                    <p class="text-blue-900"><strong>Note:</strong> If this is your first time running aider, it will ask about adding .aider* to .gitignore. Type <code class="bg-blue-100 px-1 rounded font-mono">Y</code> and press Enter (recommended).</p>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 3: Add file to context</h4>
+                <p class="text-gray-600 mb-2 text-sm">Once aider is running, add the specific file you want to understand:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('/add src/flask/app.py')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">/add src/flask/app.py</pre>
+                </div>
+                <p class="text-gray-500 text-sm italic">Note: We're using app.py instead of request.py as it's more central to Flask's architecture.</p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Action 4: Query the AI</h4>
+                <p class="text-gray-600 mb-2 text-sm">Ask a deep, repository-aware question:</p>
+                <div class="code-block p-4 mb-4">
+                    <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('Explain the purpose of the Flask class and list its most important methods, based on this file.')">
+                        Copy
+                    </button>
+                    <pre class="text-sm overflow-x-auto">Explain the purpose of the Flask class and list its most important methods, based on this file.</pre>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                <p class="text-gray-600 mb-2">Paste Aider's explanation here:</p>
+                <textarea id="micro-output" class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example output:
+
+The Flask class is the central application object that coordinates all components of a Flask web application.
+
+Key methods:
+- __init__(): Initializes the application with configuration
+- route(): Decorator for registering URL routes
+- add_url_rule(): Programmatically adds routing rules
+- run(): Starts the development server
+- before_request(): Registers functions to run before each request
+- errorhandler(): Registers custom error handlers
+..."></textarea>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                    <h5 class="font-semibold text-green-900 mb-2">The Value: Micro-Comprehension</h5>
+                    <p class="text-green-800 text-sm">
+                        This is <strong>Micro-Comprehension</strong>. This is not a standard chatbot. By using <code class="bg-green-100 px-1 rounded">/add</code>,
+                        you gave the AI precise, repository-aware context. It's answering based only on the project's actual code,
+                        not generic knowledge, which is critical for accurate understanding. You can now drill into any file with confidence.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Delta-Comprehension -->
+        <div id="step-3" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Step 3: Delta-Comprehension with pr-agent</h2>
+
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                <h4 class="font-semibold text-purple-900 mb-1">Goal</h4>
+                <p class="text-purple-800">
+                    Understand <strong>why</strong> a change was made. The hardest comprehension task is a complex
+                    Pull Request. We'll simulate how pr-agent solves this.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Tool: pr-agent (qodo-ai/pr-agent)</h3>
+                <p class="text-gray-600 mb-4">
+                    <strong>pr-agent</strong> is an AI pull request assistant that runs on GitHub and responds to
+                    commands in PR comments. It's complex to set up for a demo, so we'll simulate the experience here.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-semibold text-gray-700 mb-3">Simulation: Complex PR Review</h4>
+
+                <!-- Before State -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">Before: The Confusing Diff</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        A reviewer encounters this complex change across 3 files:
+                    </p>
+                    <div class="code-block p-4 mb-4 overflow-x-auto">
+                        <pre class="text-xs">diff --git a/src/cache/redis_cache.py b/src/cache/redis_cache.py
+new file mode 100644
+index 0000000..a1b2c3d
+--- /dev/null
++++ b/src/cache/redis_cache.py
+@@ -0,0 +1,45 @@
++import redis
++from typing import Optional, Any
++
++class RedisCache:
++    """Abstraction layer for Redis caching operations."""
++
++    def __init__(self, host: str = 'localhost', port: int = 6379):
++        self.client = redis.Redis(host=host, port=port, decode_responses=True)
++
++    def get(self, key: str) -> Optional[Any]:
++        return self.client.get(key)
++
++    def set(self, key: str, value: Any, ttl: int = 3600) -> bool:
++        return self.client.setex(key, ttl, value)
++
++    def delete(self, key: str) -> bool:
++        return self.client.delete(key) > 0
+
+diff --git a/src/services/auth_service.py b/src/services/auth_service.py
+index d4e5f6g..h7i8j9k 100644
+--- a/src/services/auth_service.py
++++ b/src/services/auth_service.py
+@@ -1,15 +1,18 @@
+-import redis
+ from src.models.user import User
++from src.cache.redis_cache import RedisCache
+
+ class AuthService:
+-    def __init__(self):
+-        self.redis_client = redis.Redis(host='localhost', port=6379)
++    def __init__(self, cache: RedisCache):
++        self.cache = cache
+
+-    def login(self, username: str, password: str) -> bool:
++    def login(self, username: str, password: str, ip_address: str) -> bool:
+         user = User.authenticate(username, password)
+         if user:
+-            session_key = f"session:{user.id}"
+-            self.redis_client.setex(session_key, 3600, user.id)
++            session_key = f"session:{user.id}"
++            self.cache.set(session_key, user.id, ttl=3600)
++            user.last_login_ip = ip_address
++            user.save()
+             return True
+         return False
+
+diff --git a/src/models/user.py b/src/models/user.py
+index k1l2m3n..o4p5q6r 100644
+--- a/src/models/user.py
++++ b/src/models/user.py
+@@ -5,6 +5,7 @@ class User(db.Model):
+     username = db.Column(db.String(80), unique=True, nullable=False)
+     email = db.Column(db.String(120), unique=True, nullable=False)
+     password_hash = db.Column(db.String(128))
++    last_login_ip = db.Column(db.String(45))  # IPv6 max length
+
+     @staticmethod
+     def authenticate(username: str, password: str):</pre>
+                    </div>
+                    <p class="text-gray-600 text-sm italic">
+                        The reviewer is confused: Why so many changes? What's the actual purpose? Is there a hidden bug fix?
+                    </p>
+                </div>
+
+                <!-- Magic Command -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">The Magic Command</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        The reviewer types this command in the GitHub PR comment:
+                    </p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-3">
+                        <code class="text-yellow-900 font-mono">/describe</code>
+                    </div>
+                </div>
+
+                <!-- After State -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">After: AI-Generated Summary</h5>
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">PR Title</h6>
+                            <p class="text-gray-700">Refactor: Optimize Caching for User Authentication</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">Summary</h6>
+                            <p class="text-gray-700 text-sm">
+                                This PR introduces a new <code class="bg-gray-100 px-1 rounded">RedisCache</code> class
+                                to abstract caching logic and updates the <code class="bg-gray-100 px-1 rounded">AuthService</code>
+                                to use it. This simplifies the login flow, improves testability by allowing cache injection,
+                                and fixes a bug where session expiration wasn't properly set. Additionally, the
+                                <code class="bg-gray-100 px-1 rounded">User</code> model now tracks the last login IP
+                                for security audit purposes.
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="font-semibold text-gray-800">Code Walkthrough</h6>
+                            <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                                <li><strong>redis_cache.py:</strong> New abstraction layer for Redis operations with TTL support</li>
+                                <li><strong>auth_service.py:</strong> Refactored to use dependency injection for better testability</li>
+                                <li><strong>user.py:</strong> Added <code class="bg-gray-100 px-1 rounded">last_login_ip</code> field for security tracking</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6 class="font-semibold text-gray-800">Type of Change</h6>
+                            <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Refactoring</span>
+                            <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Bug Fix</span>
+                            <span class="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">Enhancement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drill-down -->
+                <div class="mb-4">
+                    <h5 class="font-semibold text-gray-700 mb-2">Drill-Down Question</h5>
+                    <p class="text-gray-600 mb-2 text-sm">
+                        The reviewer has one more question. They type:
+                    </p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-3">
+                        <code class="text-yellow-900 font-mono">/ask Why was the 'User' model modified in this change?</code>
+                    </div>
+                    <div class="bg-white border border-gray-300 rounded-lg p-4">
+                        <h6 class="font-semibold text-gray-800 mb-2">AI Response</h6>
+                        <p class="text-gray-700 text-sm">
+                            The <code class="bg-gray-100 px-1 rounded">User</code> model was modified to add the
+                            <code class="bg-gray-100 px-1 rounded">last_login_ip</code> field, which is now being
+                            populated by the updated <code class="bg-gray-100 px-1 rounded">AuthService.login()</code>
+                            method on successful authentication. This enables security audit trails and helps detect
+                            suspicious login patterns. The field supports both IPv4 and IPv6 addresses (max 45 characters).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4">
+                    <h5 class="font-semibold text-green-900 mb-2">The Value: Delta-Comprehension</h5>
+                    <p class="text-green-800 text-sm">
+                        This is <strong>Delta-Comprehension</strong>. The AI read the entire diff and explained the
+                        <strong>intent and scope</strong>, saving the human reviewer 30+ minutes of cognitive load.
+                        The <code class="bg-green-100 px-1 rounded">/ask</code> command allows them to interrogate
+                        the change directly. No more piecing together changes across multiple files—the AI provides
+                        the "why" automatically.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button onclick="goToStep(2)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Next Step →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Conclusion -->
+        <div id="step-4" class="step-content bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Conclusion</h2>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 border-l-4 border-green-500 p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Congratulations!</h3>
+                <p class="text-gray-700">
+                    You've completed the Code Comprehension Stack lab.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">What You Learned</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            1
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Macro-Comprehension (Multiple Tools)</h4>
+                            <p class="text-gray-600 text-sm">
+                                Generated a high-level architectural map of the entire Flask codebase using proven tools
+                                (Aider, emerge, dependency-cruiser, or manual LLM)—understanding the system design in minutes instead of hours.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            2
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Micro-Comprehension with aider</h4>
+                            <p class="text-gray-600 text-sm">
+                                Zoomed into specific files with repository-aware AI assistance—getting precise,
+                                context-specific explanations instead of generic answers.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                            3
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Delta-Comprehension with pr-agent</h4>
+                            <p class="text-gray-600 text-sm">
+                                Simulated AI-powered pull request review—understanding the "why" and "what" of
+                                complex changes with intelligent summaries and Q&A.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-900 text-white rounded-lg p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-3">The Future of Senior Development</h3>
+                <p class="text-blue-100 mb-4">
+                    The future isn't just about generating code faster—it's about <strong>understanding it deeper</strong>.
+                </p>
+                <p class="text-blue-100">
+                    As codebases grow and AI generates more code, the bottleneck shifts from writing to comprehension.
+                    These tools are the new standard for reducing cognitive load and maintaining high-quality understanding
+                    at scale.
+                </p>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Next Steps</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Apply these tools to your own codebase
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Integrate pr-agent into your team's GitHub workflow
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Use aider as your daily pair programmer for new features
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Try emerge or dependency-cruiser for visual codebase exploration
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">→</span>
+                        Develop your own prompting patterns for macro-comprehension
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Resources</h3>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li><strong>aider (⭐ 13.5k):</strong> <a href="https://github.com/Aider-AI/aider" class="text-blue-600 hover:underline">github.com/Aider-AI/aider</a></li>
+                    <li><strong>pr-agent (⭐ 9.4k):</strong> <a href="https://github.com/qodo-ai/pr-agent" class="text-blue-600 hover:underline">github.com/qodo-ai/pr-agent</a></li>
+                    <li><strong>dependency-cruiser (⭐ 6k):</strong> <a href="https://github.com/sverweij/dependency-cruiser" class="text-blue-600 hover:underline">github.com/sverweij/dependency-cruiser</a></li>
+                    <li><strong>emerge (⭐ 977):</strong> <a href="https://github.com/glato/emerge" class="text-blue-600 hover:underline">github.com/glato/emerge</a></li>
+                </ul>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="goToStep(3)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg transition">
+                    ← Back
+                </button>
+                <button onclick="goToStep(0)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    Restart Lab
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">
+                Code Comprehension Lab | Built for developers who understand deeper, not just faster
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let currentStep = 0;
+        let selectedTool = null;
+
+        function goToStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+
+            // Show new step
+            document.getElementById(`step-${step}`).classList.add('active');
+
+            // Update progress
+            currentStep = step;
+            updateProgress();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `Step ${currentStep} of 4`;
+        }
+
+        function selectTool(tool) {
+            // Remove previous selection
+            const allCards = document.querySelectorAll('.tool-card');
+            allCards.forEach(card => card.classList.remove('selected'));
+
+            // Hide all tool options
+            const allOptions = document.querySelectorAll('.tool-option');
+            allOptions.forEach(option => option.classList.remove('active'));
+
+            // Select the clicked card
+            event.currentTarget.classList.add('selected');
+
+            // Show the selected tool option
+            document.getElementById(`tool-${tool}`).classList.add('active');
+
+            selectedTool = tool;
+
+            // Smooth scroll to the tool content
+            setTimeout(() => {
+                document.getElementById(`tool-${tool}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-gray-700');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-gray-700');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Initialize progress on load
+        updateProgress();
+    </script>
+</body>
+</html>
