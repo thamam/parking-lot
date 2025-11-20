@@ -122,6 +122,70 @@
                 </p>
             </div>
 
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">API Setup (Required for Aider)</h3>
+
+                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4">
+                    <h4 class="font-semibold text-orange-900 mb-2">💰 Cost Warning</h4>
+                    <p class="text-orange-800 text-sm mb-2">
+                        If you choose <strong>Aider</strong> (Step 1 or Step 2), it requires an LLM API key and will charge your account.
+                        Typical costs: <strong>$0.01-0.10 per query</strong>.
+                    </p>
+                    <p class="text-orange-700 text-sm">
+                        <strong>Free alternatives:</strong> Use "emerge" (Python visualization) or "Manual LLM" (copy/paste to free ChatGPT/Claude web interface).
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-2">If Using Aider: Configure an API Key</h4>
+                    <p class="text-gray-600 mb-3 text-sm">Choose one provider and set the environment variable:</p>
+
+                    <div class="space-y-3">
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option A: OpenAI (GPT-4, GPT-3.5)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('export OPENAI_API_KEY=your-key-here')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">export OPENAI_API_KEY=your-key-here</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Get key: <a href="https://platform.openai.com/api-keys" class="text-blue-600 hover:underline" target="_blank">platform.openai.com/api-keys</a></p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option B: Anthropic (Claude)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('export ANTHROPIC_API_KEY=your-key-here')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">export ANTHROPIC_API_KEY=your-key-here</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Get key: <a href="https://console.anthropic.com/settings/keys" class="text-blue-600 hover:underline" target="_blank">console.anthropic.com/settings/keys</a></p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded p-3">
+                            <p class="font-semibold text-sm text-gray-800 mb-1">Option C: Free Local Models (No Cost!)</p>
+                            <div class="code-block p-3 mb-2">
+                                <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" onclick="copyToClipboard('aider --model ollama/qwen2.5-coder:7b')">
+                                    Copy
+                                </button>
+                                <pre class="text-xs overflow-x-auto">aider --model ollama/qwen2.5-coder:7b</pre>
+                            </div>
+                            <p class="text-xs text-gray-600">Requires: <a href="https://ollama.com/" class="text-blue-600 hover:underline" target="_blank">Ollama installed locally</a> (Free, runs on your machine)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="text-sm text-gray-600">
+                    <summary class="cursor-pointer font-semibold hover:text-gray-800">Check which API key aider is using</summary>
+                    <div class="mt-2 bg-gray-50 p-3 rounded">
+                        <p class="mb-2">Run these commands to check:</p>
+                        <code class="block bg-gray-800 text-gray-100 p-2 rounded text-xs mb-1">env | grep -i "api_key"</code>
+                        <code class="block bg-gray-800 text-gray-100 p-2 rounded text-xs">cat ~/.aider.conf.yml</code>
+                    </div>
+                </details>
+            </div>
+
             <button onclick="goToStep(1)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
                 Start Lab →
             </button>
@@ -153,7 +217,8 @@
                         <p class="text-sm text-gray-600 mb-2">Use the same tool as Step 2 with architecture-focused prompts.</p>
                         <div class="flex items-center text-xs text-gray-500">
                             <span class="mr-3">⭐ 13.5k stars</span>
-                            <span>🐍 Python</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-orange-600">💰 $0.01-0.10/query</span>
                         </div>
                     </div>
 
@@ -166,7 +231,8 @@
                         <p class="text-sm text-gray-600 mb-2">Browser-based interactive dependency visualization.</p>
                         <div class="flex items-center text-xs text-gray-500">
                             <span class="mr-3">⭐ 977 stars</span>
-                            <span>🐍 Python</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-green-600">✓ Free</span>
                         </div>
                     </div>
 
@@ -191,7 +257,8 @@
                         </div>
                         <p class="text-sm text-gray-600 mb-2">Use ChatGPT/Claude with your own context gathering.</p>
                         <div class="flex items-center text-xs text-gray-500">
-                            <span>💡 Works with any LLM</span>
+                            <span class="mr-3">💡 Works with any LLM</span>
+                            <span class="text-green-600">✓ Free (web UI)</span>
                         </div>
                     </div>
                 </div>
@@ -204,6 +271,10 @@
                         <strong>Why Aider?</strong> Aider automatically maps your codebase and provides repository-aware AI analysis.
                         It's the easiest option if you're continuing to Step 2 anyway.
                     </p>
+                </div>
+
+                <div class="bg-orange-50 border border-orange-200 rounded p-3 mb-4 text-sm">
+                    <p class="text-orange-900"><strong>⚠️ Reminder:</strong> Aider requires an API key (see Step 0 setup above). Each query costs ~$0.01-0.10 depending on your provider.</p>
                 </div>
 
                 <div class="mb-6">
@@ -435,6 +506,10 @@ Based on the structure, Flask follows a modular monolithic architecture:
                     <strong>aider</strong> is a Git-integrated AI pair programmer. Unlike generic chatbots, it can
                     read your repository structure and provide context-aware answers based on your actual code.
                 </p>
+            </div>
+
+            <div class="bg-orange-50 border border-orange-200 rounded p-3 mb-6 text-sm">
+                <p class="text-orange-900"><strong>⚠️ Reminder:</strong> Aider requires an API key (see Step 0 setup). Each query costs ~$0.01-0.10. If you haven't set up your API key yet, go back to Step 0.</p>
             </div>
 
             <div class="mb-6">
