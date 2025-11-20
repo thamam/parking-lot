@@ -218,13 +218,25 @@
 
                 <div class="mb-6">
                     <h4 class="font-semibold text-gray-700 mb-2">Action 2: Run Architecture Analysis</h4>
-                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory:</p>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory, start aider:</p>
                     <div class="code-block p-4 mb-4">
-                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('aider --message \"Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details.\"')">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('aider')">
                             Copy
                         </button>
-                        <pre class="text-sm overflow-x-auto">aider --message "Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details."</pre>
+                        <pre class="text-sm overflow-x-auto">aider</pre>
                     </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-3 text-sm">
+                        <p class="text-yellow-900 mb-2"><strong>Note:</strong> When aider asks "Add .aider* to .gitignore (recommended)? (Y)es/(N)o [Yes]:"</p>
+                        <p class="text-yellow-800">Type <code class="bg-yellow-100 px-1 rounded font-mono">Y</code> and press Enter. This keeps aider's cache files out of your git repository.</p>
+                    </div>
+                    <p class="text-gray-600 mb-2 text-sm">Once aider is running, paste this prompt:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details.')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">Analyze the overall architecture of this Flask codebase. Describe the key modules, their responsibilities, and how they interact. Focus on the high-level structure, not implementation details.</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">Tip: You can use --no-gitignore flag to skip the prompt: <code class="bg-gray-100 px-1 rounded">aider --no-gitignore</code></p>
                 </div>
 
                 <div class="mb-6">
@@ -443,6 +455,9 @@ Based on the structure, Flask follows a modular monolithic architecture:
                         Copy
                     </button>
                     <pre class="text-sm overflow-x-auto">aider</pre>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded p-3 mb-3 text-sm">
+                    <p class="text-blue-900"><strong>Note:</strong> If this is your first time running aider, it will ask about adding .aider* to .gitignore. Type <code class="bg-blue-100 px-1 rounded font-mono">Y</code> and press Enter (recommended).</p>
                 </div>
             </div>
 
