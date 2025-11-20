@@ -208,24 +208,23 @@
 
                 <!-- Tool Selector Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <!-- Option A: Aider -->
-                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('aider')">
+                    <!-- Option A: Mermaid Diagrams -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('mermaid')">
                         <div class="flex items-start justify-between mb-2">
-                            <h4 class="font-semibold text-gray-800">Aider (AI-Powered)</h4>
+                            <h4 class="font-semibold text-gray-800">Mermaid Diagrams</h4>
                             <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Recommended</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-2">Use the same tool as Step 2 with architecture-focused prompts.</p>
+                        <p class="text-sm text-gray-600 mb-2">LLM generates diagram code, you render it visually. Most reliable option.</p>
                         <div class="flex items-center text-xs text-gray-500">
-                            <span class="mr-3">⭐ 13.5k stars</span>
-                            <span class="mr-3">🐍 Python</span>
-                            <span class="text-orange-600">💰 $0.01-0.10/query</span>
+                            <span class="mr-3">📊 Visual diagrams</span>
+                            <span class="text-green-600">✓ Free</span>
                         </div>
                     </div>
 
                     <!-- Option B: emerge -->
                     <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('emerge')">
                         <div class="flex items-start justify-between mb-2">
-                            <h4 class="font-semibold text-gray-800">emerge (Visual Graph)</h4>
+                            <h4 class="font-semibold text-gray-800">emerge (Interactive)</h4>
                             <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Visual</span>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">Browser-based interactive dependency visualization.</p>
@@ -236,26 +235,41 @@
                         </div>
                     </div>
 
-                    <!-- Option C: dependency-cruiser -->
-                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('depcruiser')">
+                    <!-- Option C: pydeps -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('pydeps')">
                         <div class="flex items-start justify-between mb-2">
-                            <h4 class="font-semibold text-gray-800">dependency-cruiser</h4>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">JS/TS Only</span>
+                            <h4 class="font-semibold text-gray-800">pydeps (Graph)</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Visual</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-2">Dependency graph visualization for JavaScript/TypeScript projects.</p>
+                        <p class="text-sm text-gray-600 mb-2">Python dependency graphs as SVG/PNG images.</p>
                         <div class="flex items-center text-xs text-gray-500">
-                            <span class="mr-3">⭐ 6k stars</span>
-                            <span>📦 npm</span>
+                            <span class="mr-3">⭐ 1.8k stars</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-green-600">✓ Free</span>
                         </div>
                     </div>
 
-                    <!-- Option D: Manual LLM -->
+                    <!-- Option D: Aider -->
+                    <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('aider')">
+                        <div class="flex items-start justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">Aider (Text-based)</h4>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Text Analysis</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">AI prose description, not visual. Better for Step 2 (Micro).</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-3">⭐ 13.5k stars</span>
+                            <span class="mr-3">🐍 Python</span>
+                            <span class="text-orange-600">💰 $0.01-0.10/query</span>
+                        </div>
+                    </div>
+
+                    <!-- Option E: Manual LLM -->
                     <div class="tool-card border-2 border-gray-300 rounded-lg p-4" onclick="selectTool('manual')">
                         <div class="flex items-start justify-between mb-2">
-                            <h4 class="font-semibold text-gray-800">Manual LLM Query</h4>
+                            <h4 class="font-semibold text-gray-800">Manual LLM (Text)</h4>
                             <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Flexible</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-2">Use ChatGPT/Claude with your own context gathering.</p>
+                        <p class="text-sm text-gray-600 mb-2">Text description via ChatGPT/Claude. No visuals.</p>
                         <div class="flex items-center text-xs text-gray-500">
                             <span class="mr-3">💡 Works with any LLM</span>
                             <span class="text-green-600">✓ Free (web UI)</span>
@@ -264,12 +278,183 @@
                 </div>
             </div>
 
-            <!-- Option A: Aider -->
-            <div id="tool-aider" class="tool-option">
+            <!-- Option A: Mermaid Diagrams -->
+            <div id="tool-mermaid" class="tool-option">
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                    <p class="text-sm text-green-900">
+                        <strong>Why Mermaid?</strong> Most reliable visual approach. Uses free LLM to generate diagram code,
+                        then renders it as an actual visual architecture diagram. No installation, no errors, always works.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Gather Context</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Get the directory structure and key file info:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('tree -L 3 -I \'__pycache__|*.pyc|tests|.git\' src/ && echo \"\\n=== Key Files ===\" && head -30 src/flask/app.py src/flask/blueprints.py src/flask/routing.py')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">tree -L 3 -I '__pycache__|*.pyc|tests|.git' src/ && echo "\n=== Key Files ===" && head -30 src/flask/app.py src/flask/blueprints.py src/flask/routing.py</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Mermaid Diagram</h4>
+                    <p class="text-gray-600 mb-2 text-sm">Copy this prompt + the output from above into ChatGPT/Claude (free web interface):</p>
+                    <div class="bg-gray-100 border border-gray-300 rounded p-3 text-sm mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <strong class="text-gray-800">Prompt to use:</strong>
+                            <button class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs" onclick="copyToClipboard('Based on this Flask codebase structure and file headers, create a Mermaid architecture diagram showing:\n1. Main modules and their responsibilities\n2. How modules interact (dependencies/imports)\n3. Data flow and key relationships\n\nUse Mermaid graph syntax. Make it clear and hierarchical.\n\n[Paste your tree and head output here]')">
+                                Copy
+                            </button>
+                        </div>
+                        <p class="font-mono text-gray-700 text-xs">
+                            Based on this Flask codebase structure and file headers, create a Mermaid architecture diagram showing:<br>
+                            1. Main modules and their responsibilities<br>
+                            2. How modules interact (dependencies/imports)<br>
+                            3. Data flow and key relationships<br><br>
+                            Use Mermaid graph syntax. Make it clear and hierarchical.<br><br>
+                            [Paste your tree and head output here]
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 3: Render the Diagram</h4>
+                    <p class="text-gray-600 mb-2 text-sm">The LLM will output Mermaid code like:</p>
+                    <div class="bg-gray-100 rounded p-3 text-xs mb-3 font-mono">
+                        graph TD<br>
+                        &nbsp;&nbsp;App[Flask App] --> Routing[Routing]<br>
+                        &nbsp;&nbsp;App --> Blueprints[Blueprints]<br>
+                        &nbsp;&nbsp;Routing --> Views[Views]<br>
+                        &nbsp;&nbsp;...
+                    </div>
+                    <p class="text-gray-600 mb-2 text-sm">Copy that code and paste it into:</p>
+                    <div class="flex items-center space-x-2">
+                        <a href="https://mermaid.live" target="_blank" class="text-blue-600 hover:underline font-semibold">mermaid.live</a>
+                        <span class="text-gray-500 text-sm">← Opens Mermaid Live Editor</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">You'll instantly see a visual diagram! You can download it as PNG/SVG.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the visual diagram:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The Mermaid diagram shows Flask's hierarchical architecture:
+- Central Flask App orchestrates all components
+- Routing system connects URLs to view functions
+- Blueprints provide modular sub-applications
+- Context management handles request/app scope
+- Clear separation between WSGI layer and application logic
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option B: pydeps -->
+            <div id="tool-pydeps" class="tool-option">
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
                     <p class="text-sm text-blue-900">
-                        <strong>Why Aider?</strong> Aider automatically maps your codebase and provides repository-aware AI analysis.
-                        It's the easiest option if you're continuing to Step 2 anyway.
+                        <strong>Why pydeps?</strong> Automatically generates dependency graphs from Python imports.
+                        Creates clean SVG/PNG images showing module relationships.
+                    </p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install pydeps</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install pydeps')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install pydeps</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Dependency Graph</h4>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pydeps src/flask --max-bacon=2 --cluster')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pydeps src/flask --max-bacon=2 --cluster</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">This creates flask.svg showing module dependencies. Open it in your browser.</p>
+                    <p class="text-gray-600 text-sm mt-2"><strong>Options:</strong> <code class="bg-gray-100 px-1 rounded">--max-bacon=2</code> limits depth, <code class="bg-gray-100 px-1 rounded">--cluster</code> groups related modules</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the dependency graph:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The pydeps graph reveals:
+- app.py is the central hub with most dependencies
+- blueprints.py has minimal external dependencies (good modularity)
+- helpers.py is widely used across many modules
+- Circular dependencies between ctx.py and globals.py
+- Clear layering: WSGI → App → Routing → Views
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option C: emerge -->
+            <div id="tool-emerge" class="tool-option">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="text-sm text-blue-900">
+                        <strong>Why emerge?</strong> Creates beautiful, interactive browser-based visualizations showing
+                        dependency graphs, file relationships, and code metrics.
+                    </p>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-sm">
+                    <p class="text-yellow-900"><strong>⚠️ Known Issue:</strong> emerge may fail with "ModuleNotFoundError: No module named 'pkg_resources'"</p>
+                    <p class="text-yellow-800 mt-1"><strong>Fix:</strong> Run <code class="bg-yellow-100 px-1 rounded font-mono">pip install setuptools</code> first</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 1: Install emerge (with fix)</h4>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('pip install setuptools emerge-viz')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">pip install setuptools emerge-viz</pre>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Visualization</h4>
+                    <p class="text-gray-600 mb-2 text-sm">From within the flask directory:</p>
+                    <div class="code-block p-4 mb-4">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('emerge --language python --output-directory ./emerge-output src/')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">emerge --language python --output-directory ./emerge-output src/</pre>
+                    </div>
+                    <p class="text-gray-500 text-sm italic">This generates an interactive HTML visualization. Open the generated index.html in your browser.</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Learn & Verify</h4>
+                    <p class="text-gray-600 mb-2">Describe what you learned from the visualization:</p>
+                    <textarea class="w-full border border-gray-300 rounded-lg p-3 h-48 font-mono text-sm" placeholder="Example observations:
+
+The visualization shows Flask has a central 'app' module with high coupling.
+Key clusters: routing, templating, context management, and blueprint subsystems.
+The dependency graph reveals clean separation between request handling and response generation.
+Metrics show most complexity in the routing and application modules.
+..."></textarea>
+                </div>
+            </div>
+
+            <!-- Option D: Aider -->
+            <div id="tool-aider" class="tool-option">
+                <div class="bg-gray-50 border-l-4 border-gray-500 p-4 mb-4">
+                    <p class="text-sm text-gray-900">
+                        <strong>Note:</strong> Aider provides text descriptions, not visual diagrams.
+                        For macro-comprehension, visual tools (Mermaid, pydeps, emerge) are more effective.
+                        Aider works best for Step 2 (Micro-Comprehension) where you ask specific questions about code.
                     </p>
                 </div>
 
