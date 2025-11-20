@@ -427,12 +427,19 @@ The pydeps graph reveals:
                     <h4 class="font-semibold text-gray-700 mb-2">Action 2: Generate Configuration Template</h4>
                     <p class="text-gray-600 mb-2 text-sm">Create a configuration file for your Flask analysis:</p>
                     <div class="code-block p-4 mb-4">
-                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('emerge --create-py-template emerge-config.yaml')">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('emerge --add-config PY')">
                             Copy
                         </button>
-                        <pre class="text-sm overflow-x-auto">emerge --create-py-template emerge-config.yaml</pre>
+                        <pre class="text-sm overflow-x-auto">emerge --add-config PY</pre>
                     </div>
-                    <p class="text-gray-600 text-sm mt-2">This creates a template you can customize. Edit <code class="bg-gray-100 px-1 rounded">emerge-config.yaml</code> to set:</p>
+                    <p class="text-gray-600 text-sm mt-2">This creates <code class="bg-gray-100 px-1 rounded">py-template.yaml</code>. Rename it and customize:</p>
+                    <div class="code-block p-4 mb-3">
+                        <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" onclick="copyToClipboard('mv py-template.yaml emerge-config.yaml')">
+                            Copy
+                        </button>
+                        <pre class="text-sm overflow-x-auto">mv py-template.yaml emerge-config.yaml</pre>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">Edit <code class="bg-gray-100 px-1 rounded">emerge-config.yaml</code> to set:</p>
                     <ul class="text-sm text-gray-600 list-disc list-inside ml-4 mt-2">
                         <li>Project name: "flask"</li>
                         <li>Source directory: <code class="bg-gray-100 px-1 rounded">./src/flask</code></li>
